@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    public string mainMenu;
+
+	public PlayerMovement thePlayer;
+	private Vector2 playerStart;
+
+	public GameObject victoryScreen;
+	public GameObject gameOverScreen;
+    public AudioSource gameOverSound;
+
+    
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerStart = thePlayer.transform.position;
+    }
+
+    public void Victory() 
+    {
+    		victoryScreen.SetActive(true);
+    		thePlayer.gameObject.SetActive(false);
+    }
+
+    public void GameOver() 
+    {
+
+    		gameOverScreen.SetActive(true);
+    		thePlayer.gameObject.SetActive(false);
+            gameOverSound.Play();
+            
+            StartCoroutine("GameReset");
+
+    }
+
+    IEnumerator GameReset()
+    {
+        yield return new WaitForSeconds(3);
+        Debug.Log("TIME FOR RESET");
+        SceneManager.LoadScene(mainMenu);
+        thePlayer.gameObject.SetActive(true);
+    }
+
+    public void Reset() 
+    {
+    		victoryScreen.SetActive(false);
+    		gameOverScreen.SetActive(false);
+    		thePlayer.gameObject.SetActive(true);
+    		thePlayer.transform.position = playerStart;
+    }
+    
+    }
+
